@@ -20,6 +20,7 @@ def get_message(ip):
         r = requests.get(api)
         message = r.json()[0]
         if message["times_used"] > 0:
+            time.sleep(60)
             continue
         return message
 
@@ -46,7 +47,7 @@ def light_toggle(pin, value):
 
 
 def message_used(message):
-    api = "http://" + IP + ":8080/api/v1/messages/update" + str(message["message_id"])
+    api = "http://" + IP + ":8080/api/v1/messages/update/" + str(message["message_id"])
     message_data = {
         "message": message["message"],
         "times_used": message["times_used"] + 1,
