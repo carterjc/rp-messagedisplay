@@ -2,10 +2,9 @@ import lcddriver
 import time
 import requests
 import RPi.GPIO as GPIO
+import constants
 
 display = lcddriver.lcd()
-# probably move to an env or something later
-ip = "192.168.1.230"
 
 
 def display_message(message):
@@ -30,6 +29,7 @@ def setup_gpio(lpin, bpin):
     GPIO.setmode(GPIO.BOARD)
     # Sets up light
     GPIO.setup(lpin, GPIO.OUT)
+    light_toggle(lpin, 0)
     # Sets up button
     GPIO.setup(bpin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
@@ -46,7 +46,7 @@ def light_toggle(pin, value):
 
 
 def message_used(message):
-    api = "http://" + ip + ":8080/api/v1/messages/update" + str(message["message_id"])
+    api = "http://" + IP + ":8080/api/v1/messages/update" + str(message["message_id"])
     message_data = {
         "message": message["message"],
         "times_used": message["times_used"] + 1,
@@ -65,32 +65,26 @@ def log_action(ip, action, message_id):
 
 
 def main():
-    light_pin = 18
-    button_pin = 11
-    setup_gpio(light_pin, button_pin)
-    message = get_message(ip)
+    setup_gpio(LIGHT_PIN, BUTTON_PIN)
+    # Get initial message
+    message = get_message(IP)
     try:
         while True:
             display_message(message["message"])
             # Turn on the light
-            light_toggle(light_pin, 1)
+            light_toggle(LIGHT_PIN, 1)
             while True:
                 # if button was pushed, then turn off light
-                if GPIO.input(button_pin) == 1:
-                    light_toggle(light_pin, 0)
+                if GPIO.input(BUTTON_PIN) == 1:
+                    light_toggle(LIGHT_PIN, 0)
                     display_message("Successfully read :)")
                     time.sleep(5)
                     display_message("")
-                    log_action(ip, "read", message["message_id"])
+                    log_action(IP, "read", message["message_id"])
                     message_used(message)
                     break
             # Check for new message
-            while True:
-                new_message = get_message(ip)
-                if new_message != "":
-                    log_action(ip, "fetched", message["message_id"])
-                    message = new_message
-                    break
+            get_message(IP)
     except KeyboardInterrupt:
         cleanup()
     cleanup()
