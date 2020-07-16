@@ -1,4 +1,4 @@
-const Message = require('../models/Message');
+const Action = require('../models/Action');
 const db = require('../models/db');
 
 module.exports = {
