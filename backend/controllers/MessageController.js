@@ -62,15 +62,14 @@ module.exports = {
         const message = new Message({
             message_id: req.body.message_id,
             message: req.body.message,
-            date_added: new Date().toISOString().slice(0, 19).replace('T', ' '),
             times_used: req.body.times_used,
             date_for: req.body.date_for
         });
 
 
         db.query(
-            "UPDATE messages SET message = ?, date_added = ?, times_used = ?, date_for = ? WHERE message_id = ?",
-            [message.message, message.date_added, message.times_used, message.date_for, req.params.id],
+            "UPDATE messages SET message = ?, times_used = ?, date_for = ? WHERE message_id = ?",
+            [message.message, message.times_used, message.date_for, req.params.id],
             (err, resp) => {
                 if (err) {
                     console.log(err);

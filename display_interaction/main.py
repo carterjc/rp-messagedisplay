@@ -15,13 +15,14 @@ def display_message(message):
 
 
 def get_message(ip):
-    # TODO: alter this function to be more robust + error handling
-    api = "http://" + ip + ":8080/api/v1/messages/recent"
-    r = requests.get(api)
-    message = r.json()[0]
-    if message["times_used"] > 0:
-        return "", ""
-    return message
+    while True:
+        # TODO: alter this function to be more robust + error handling
+        api = "http://" + ip + ":8080/api/v1/messages/recent"
+        r = requests.get(api)
+        message = r.json()[0]
+        if message["times_used"] > 0:
+            continue
+        return message
 
 
 def setup_gpio(lpin, bpin):
@@ -45,7 +46,7 @@ def light_toggle(pin, value):
 
 
 def message_used(message):
-    api = "http://" + ip + ":8080/api/v1/message/" + str(message["message_id"])
+    api = "http://" + ip + ":8080/api/v1/messages/update" + str(message["message_id"])
     message_data = {
         "message": message["message"],
         "times_used": message["times_used"] + 1,
