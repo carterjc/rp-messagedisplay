@@ -2,7 +2,7 @@ import lcddriver
 import time
 import requests
 import RPi.GPIO as GPIO
-import constants
+from constants import *
 
 display = lcddriver.lcd()
 
