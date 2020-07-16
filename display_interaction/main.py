@@ -22,6 +22,7 @@ def get_message(ip):
         if message["times_used"] > 0:
             time.sleep(60)
             continue
+        log_action(IP, "fetched", message["message_id"])
         return message
 
 
