@@ -15,7 +15,7 @@ def display_message(message):
 
 def get_message(ip):
     while True:
-        api = "http://" + ip + ":8080/api/v1/messages/recent"
+        api = "http://" + IP + ":" + PORT + "/api/v1/messages/recent"
         try:
             r = requests.get(api)
             r.raise_for_status()
@@ -63,7 +63,7 @@ def light_toggle(pin, value):
 
 
 def message_used(message):
-    api = "http://" + IP + ":8080/api/v1/messages/update/" + str(message["message_id"])
+    api = "http://" + IP + ":" + PORT + "/api/v1/messages/update/" + str(message["message_id"])
     message_data = {
         "message": message["message"],
         "times_used": message["times_used"] + 1,
@@ -73,7 +73,7 @@ def message_used(message):
 
 
 def log_action(ip, action, message_id):
-    api = "http://" + ip + ":8080/api/v1/actions/"
+    api = "http://" + IP + ":" + PORT + "/api/v1/actions/"
     action_data = {
         "action_log": action,
         "message_id": message_id
