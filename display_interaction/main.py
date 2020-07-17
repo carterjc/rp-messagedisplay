@@ -15,9 +15,24 @@ def display_message(message):
 
 def get_message(ip):
     while True:
-        # TODO: alter this function to be more robust + error handling
         api = "http://" + ip + ":8080/api/v1/messages/recent"
-        r = requests.get(api)
+        try:
+            r = requests.get(api)
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as errh:
+            print("Http Error:", errh)
+            continue
+        except requests.exceptions.ConnectionError as errc:
+            print("Error Connecting:", errc)
+            continue
+        except requests.exceptions.Timeout as errt:
+            print("Timeout Error:", errt)
+            continue
+        except requests.exceptions.RequestException as err:
+            print("OOps: Something Else", err)
+            continue
+        if len(r.json()) == 0:
+            continue
         message = r.json()[0]
         if message["times_used"] > 0:
             time.sleep(60)
