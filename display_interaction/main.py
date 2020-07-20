@@ -94,11 +94,11 @@ def main():
                 # if button was pushed, then turn off light
                 if GPIO.input(BUTTON_PIN) == 1:
                     light_toggle(LIGHT_PIN, 0)
+                    log_action(IP, "read", message["message_id"])
+                    message_used(message)
                     display_message("Successfully read :)")
                     time.sleep(5)
                     display_message("")
-                    log_action(IP, "read", message["message_id"])
-                    message_used(message)
                     break
             # Check for new message
             message = get_message(IP)
