@@ -101,7 +101,7 @@ def main():
                     message_used(message)
                     break
             # Check for new message
-            get_message(IP)
+            message = get_message(IP)
     except KeyboardInterrupt:
         cleanup()
     cleanup()
