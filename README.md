@@ -82,3 +82,6 @@ So, that's it. I worked on a time crunch to get this out for a special birthday 
 physical things, engineering, woodworking, and more - a great project.
 
 The end result met much approval, so I'm happy.
+
+![](/images/final_product.jpg)
+(I apologize for the poor picture)
